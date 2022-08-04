@@ -71,6 +71,30 @@ app.get("/",
   }
 );
 
+app.get("/users/createAccount", 
+  catchError(async (req, res) => {
+    res.render("createAccount");
+  })
+);
+
+app.post("/createAccount", 
+  catchError(async (req, res) => {
+    let store = res.locals.store;
+    let username = req.body.username.trim();
+    let password = req.body.password;
+    let newUser = await store.addUser(username, password);
+    if (newUser) {
+      req.flash("success", "user was created!");
+      res.redirect("/users/signin");
+    } else {
+      req.flash("error", "username already exists");
+      res.render("createAccount", {
+        flash: req.flash(),
+      });
+    }
+  })
+);
+
 // Render the list of todo lists
 app.get("/lists", 
   requiresAuthorization,
@@ -328,7 +352,7 @@ app.get("/users/signin",
   catchError(async (req, res) => {
     req.flash("info", "Please sign in.");
     res.render("signin", {
-      flash: req.flash(),
+      flash: Object.assign(req.flash(), res.locals.flash),
     });
   })
 );

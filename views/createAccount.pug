@@ -1,0 +1,23 @@
+extends layout
+
+block main
+  form(action="/createAccount" method="post")
+    dt
+      dl
+        label(for="username") Enter username
+      dd
+        input(type="text"
+              name="username"
+              value=username
+              placeholder="any name here")
+
+      dl
+        label(for="password") Enter password
+      dd    
+        input(type="text"
+              name="password"
+              value=password
+              placeholder="asfjib44ak.1j3bf!sa")
+
+    fieldset.actions
+      input(type="submit" value="Create Account!")
